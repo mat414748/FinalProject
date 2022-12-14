@@ -10,4 +10,4 @@ const initModel = {
   rank: 0
 };
 
-export default initModel;
+module.exports = { initModel };

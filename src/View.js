@@ -1,7 +1,7 @@
-import hh from "hyperscript-helpers";
-import { h } from "virtual-dom";
-import * as R from "ramda";
-import { showFormMsg, questionInputMsg, answerInputMsg, saveCardMsg, deleteCardMsg, answerShow } from "./Update";
+const hh = require("hyperscript-helpers");
+const { h } = require("virtual-dom");
+const R = require('ramda');
+const { showFormMsg, questionInputMsg, answerInputMsg, saveCardMsg, deleteCardMsg, answerShow } = require("./Update.js");
 
 const btnStyle = "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded";
 
@@ -169,4 +169,4 @@ function view(dispatch, model) {
   return div({ className: "flex flex-col" }, [formView(dispatch, model), tableView(dispatch, model.cards)]);
 }
 
-export default view;
+module.exports = {view, tableView};

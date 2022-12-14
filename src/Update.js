@@ -1,4 +1,4 @@
-import * as R from 'ramda';
+const R = require('ramda');
 
 const MSGS = {
   SHOW_FORM: 'SHOW_FORM',
@@ -9,37 +9,37 @@ const MSGS = {
   ANSWER_SHOW: 'ANSWER_SHOW'
 };
 
-export function showFormMsg(showForm) {
+function showFormMsg(showForm) {
   return {
     type: MSGS.SHOW_FORM,
     showForm,
   };
 }
 
-export function questionInputMsg(question) {
+function questionInputMsg(question) {
   return {
     type: MSGS.QUESTION_INPUT,
     question,
   };
 }
 
-export function answerInputMsg(answers) {
+function answerInputMsg(answers) {
   return {
     type: MSGS.ANSWER_INPUT,
     answers,
   };
 }
 
-export const saveCardMsg = { type: MSGS.SAVE_CARD };
+const saveCardMsg = { type: MSGS.SAVE_CARD };
 
-export function deleteCardMsg(id) {
+function deleteCardMsg(id) {
   return {
     type: MSGS.DELETE_CARD,
     id,
   };
 }
 
-export function answerShow(id, answerShow = "", changeTextStatus = 1, changedQuestion = "", changedAnswer = "") {
+function answerShow(id, answerShow = "", changeTextStatus = 1, changedQuestion = "", changedAnswer = "") {
   if (changedAnswer=== "") {
     return {
       type: MSGS.ANSWER_SHOW,
@@ -120,7 +120,7 @@ function update(msg, model) {
       return { ...model, answers };
     }
     case MSGS.SAVE_CARD: {
-      const updatedModel = add(msg, model);
+      const updatedModel = add(model);
       return updatedModel;
     }
     case MSGS.DELETE_CARD: {
@@ -134,7 +134,7 @@ function update(msg, model) {
   return model;
 }
 
-function add(msg, model) {
+function add(model) {
   const { nextId, question, answers, toogle } = model;
   const card = { id: nextId + 1, question, answers, toogle:0};
   const cards = [...model.cards, card]
@@ -150,4 +150,4 @@ function add(msg, model) {
   };
 }
 
-export default update;
+module.exports = {update, MSGS, add, showFormMsg, questionInputMsg, answerInputMsg, saveCardMsg, deleteCardMsg, answerShow};

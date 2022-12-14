@@ -1,8 +1,8 @@
-import { h, diff, patch } from 'virtual-dom';
-import createElement from 'virtual-dom/create-element';
-import {  deleteCardMsg } from "./Update";
+const { diff, patch } = require("virtual-dom");
+const createElement = require("virtual-dom/create-element");
+const { deleteCardMsg } = require("./Update.js");
+const R = require('ramda');
 
-import * as R from 'ramda';
 
 function app(initModel, update, view, node) {
   let model = initModel;
@@ -22,7 +22,7 @@ function app(initModel, update, view, node) {
       model = update(msg, model);
       const newModel = model.cards;
       const trueCardsSequence = R.sortBy(R.prop('rank'), newModel);
-      model.cards = trueCardsSequence.reverse();
+      model.cards = trueCardsSequence;
       const updatedView = view(dispatch, model);
       const patches = diff(currentView, updatedView);
       rootNode = patch(rootNode, patches);
@@ -31,4 +31,4 @@ function app(initModel, update, view, node) {
   }
 }
 
-export default app;
+module.exports = {app};
