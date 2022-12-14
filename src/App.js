@@ -1,6 +1,6 @@
 import { h, diff, patch } from 'virtual-dom';
 import createElement from 'virtual-dom/create-element';
-import {  deleteMealMsg } from "./Update";
+import {  deleteCardMsg } from "./Update";
 
 function app(initModel, update, view, node) {
   let model = initModel;
@@ -16,9 +16,9 @@ function app(initModel, update, view, node) {
       rootNode = patch(rootNode, patches);
       currentView = updatedView;
       if (updatedModel.nextId > 2) {
-        dispatch(deleteMealMsg(updatedModel.nextId-1));
+        dispatch(deleteCardMsg(updatedModel.nextId-1));
       } else {
-        dispatch(deleteMealMsg(updatedModel.nextId-1));
+        dispatch(deleteCardMsg(updatedModel.nextId-1));
       } 
     } else {
       model = update(msg, model);

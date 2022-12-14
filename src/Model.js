@@ -1,10 +1,10 @@
 const initModel = {
   description: '',
-  calories: 0,
+  answers: 0,
   showForm: false,
   nextId: 1,
   editId: null,
-  meals: [],
+  cards: [],
   toogle: 0,
   statusAnswer: ""
 };

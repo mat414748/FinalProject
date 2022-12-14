@@ -2,10 +2,10 @@ import * as R from 'ramda';
 
 const MSGS = {
   SHOW_FORM: 'SHOW_FORM',
-  MEAL_INPUT: 'MEAL_INPUT',
-  CALORIES_INPUT: 'CALORIES_INPUT',
-  SAVE_MEAL: 'SAVE_MEAL',
-  DELETE_MEAL: 'DELETE_MEAL',
+  QUESTION_INPUT: 'QUESTION_INPUT',
+  ANSWER_INPUT: 'ANSWER_INPUT',
+  SAVE_CARD: 'SAVE_CARD',
+  DELETE_CARD: 'DELETE_CARD',
   ANSWER_SHOW: 'ANSWER_SHOW'
 };
 
@@ -16,25 +16,25 @@ export function showFormMsg(showForm) {
   };
 }
 
-export function mealInputMsg(description) {
+export function questionInputMsg(description) {
   return {
-    type: MSGS.MEAL_INPUT,
+    type: MSGS.QUESTION_INPUT,
     description,
   };
 }
 
-export function caloriesInputMsg(calories) {
+export function answerInputMsg(answers) {
   return {
-    type: MSGS.CALORIES_INPUT,
-    calories,
+    type: MSGS.ANSWER_INPUT,
+    answers,
   };
 }
 
-export const saveMealMsg = { type: MSGS.SAVE_MEAL };
+export const saveCardMsg = { type: MSGS.SAVE_CARD };
 
-export function deleteMealMsg(id) {
+export function deleteCardMsg(id) {
   return {
-    type: MSGS.DELETE_MEAL,
+    type: MSGS.DELETE_CARD,
     id,
   };
 }
@@ -52,14 +52,14 @@ function update(msg, model) {
     case MSGS.ANSWER_SHOW: {
       const id = msg.id ;
       const statusAnswer = msg.answerShow;
-      const oneMeal = R.filter(
-        meal => meal.id == id
-      , model.meals);
-      const meal = {id:oneMeal[oneMeal.length - 1].id + 1, description:oneMeal[0].description, calories:oneMeal[0].calories, toogle:1, statusAnswer: statusAnswer};
-      const meals = [...model.meals, meal]
-      console.log(meals);
-      return {...model, meals, nextId: meal.id, description: '',
-      calories: 0,
+      const oneCard = R.filter(
+        card => card.id == id
+      , model.cards);
+      const card = {id:oneCard[oneCard.length - 1].id + 1, description:oneCard[0].description, answers:oneCard[0].answers, toogle:1, statusAnswer: statusAnswer};
+      const cards = [...model.cards, card]
+      console.log(cards);
+      return {...model, cards, nextId: card.id, description: '',
+      answers: 0,
       showForm: false,
       toogle: 1,
       statusAnswer: ""
@@ -67,43 +67,43 @@ function update(msg, model) {
     }
     case MSGS.SHOW_FORM: {
       const { showForm } = msg;
-      return { ...model, showForm, description: '', calories: 0 };
+      return { ...model, showForm, description: '', answers: 0 };
     }
-    case MSGS.MEAL_INPUT: {
+    case MSGS.QUESTION_INPUT: {
       const { description } = msg;
       return { ...model, description };
     }
-    case MSGS.CALORIES_INPUT: {
-      const calories = R.pipe( 
+    case MSGS.ANSWER_INPUT: {
+      const answers = R.pipe( 
         R.defaultTo(0),
-      )(msg.calories);
-      return { ...model, calories };
+      )(msg.answers);
+      return { ...model, answers };
     }
-    case MSGS.SAVE_MEAL: {
+    case MSGS.SAVE_CARD: {
       const updatedModel = add(msg, model);
       return updatedModel;
     }
-    case MSGS.DELETE_MEAL: {
+    case MSGS.DELETE_CARD: {
       const { id } = msg;
-      const meals = R.filter(
-        meal => meal.id !== id
-      , model.meals);
-      return { ...model, meals };
+      const cards = R.filter(
+        card => card.id !== id
+      , model.cards);
+      return { ...model, cards };
     }
   }
   return model;
 }
 
 function add(msg, model) {
-  const { nextId, description, calories, toogle } = model;
-  const meal = { id: nextId + 1, description, calories, toogle:0};
-  const meals = [...model.meals, meal]
+  const { nextId, description, answers, toogle } = model;
+  const card = { id: nextId + 1, description, answers, toogle:0};
+  const cards = [...model.cards, card]
   return {
     ...model,
-    meals,
+    cards,
     nextId: nextId + 1,
     description: '',
-    calories: 0,
+    answers: 0,
     showForm: false,
     toogle: 0
   };
