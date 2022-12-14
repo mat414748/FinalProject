@@ -161,7 +161,7 @@ function formView(dispatch, model) {
       className: `${btnStyle} max-w-xs ml-[170px]`,
       onclick: () => dispatch(showFormMsg(true)),
     },
-    "Add Flashcard"
+    "Add Quizcard"
   );
 }
 

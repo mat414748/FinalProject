@@ -16,3 +16,6 @@ An application for creating cards with questions and answers, and then evaluatin
 # Difficult moments
 - answerShow - a function that does almost all the work(Creating and changing cards) with cards.
 - dispatch - this function is necessary to perform any actions. It is divided into 2 parts: 1.To work with cards, request "ANSWER_SHOW" 2. For all other requests
+- cardRow - An extremely redundant function, but due to lack of time, I left everything as it is.Creates a card according to the toggle switch(actually he is if :3)
+# Testing
+The main Update and View functions have been largely tested.These tests function without problems and perform their function
