@@ -20,6 +20,7 @@ function app(initModel, update, view, node) {
       } else {
         dispatch(deleteCardMsg(updatedModel.nextId-1));
       } 
+      console.log(updatedModel);
     } else {
       model = update(msg, model);
       const updatedView = view(dispatch, model);

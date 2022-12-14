@@ -5,7 +5,7 @@ import { showFormMsg, questionInputMsg, answerInputMsg, saveCardMsg, deleteCardM
 
 const btnStyle = "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded";
 
-const { div, button, form, label, input, table, thead, tbody, tr, th, td } = hh(h);
+const { div, button, form, label, input, table, tbody, tr, td, textarea } = hh(h);
 
 function diva(tag, className, value) {
   return tag({ className }, value);
@@ -16,27 +16,58 @@ function cardRow(dispatch, className, card) {
     return tr({ className }, [
       div({className: "bg-amber-200"}, [
       diva(div, "min-w-[100px] min-h-[20px]  text-[20px] ml-[50px] underline", "Question"),
-      diva(div, "min-w-[100px] min-h-[50px]  text-[20px] ml-[50px]", card.description),
+      diva(div, "min-w-[100px] min-h-[50px]  text-[20px] ml-[50px]", card.question),
       div({className:"min-w-[100px] min-h-[50px]  text-[20px] ml-[50px] cursor-pointer underline", onclick: () => dispatch(answerShow(card.id))}, "Show Answer"),
       diva(div, "min-w-[100px] min-h-[50px]  text-[20px] ml-[50px]", ""),
       ]),
       diva(td, "text-center", [button({
             className: "hover:bg-gray-200 p-2 rounded text-[50px]",
-            onclick: () => dispatch(deletecardMsg(card.id)),
+            onclick: () => dispatch(deleteСardMsg(card.id)),
           },
           "🗑"
         ),
       ]),
     ]);
-  }
+  } else if (card.toogle == 1) {
+    return tr({ className }, [
+      div({className: "bg-amber-200"}, [
+      diva(div, "min-w-[100px] min-h-[20px]  text-[20px] ml-[50px] underline", "Question"),
+      div({className:"min-w-[300px] min-h-[50px]  text-[20px] ml-[50px]", onclick: () => dispatch(answerShow(card.id, card.statusAnswer, 2)) }, card.question),
+      div({className:"min-w-[100px] min-h-[50px]  text-[20px] ml-[50px] underline"}, "Answer"),
+      div({className:"min-w-[300px] min-h-[50px]  text-[20px] ml-[50px]", onclick: () => dispatch(answerShow(card.id, card.statusAnswer, 2)) }, card.answers),
+      diva(div, "min-w-[100px] min-h-[50px]  text-[30px] ml-[50px]", "Answer status: " + card.statusAnswer),
+      div({className:"min-w-[100px] min-h-[50px]  text-[20px] ml-[50px]"},[ 
+        button({
+          className: "bg-lime-400 hover:bg-lime-700 p-2 rounded text-[20px] border-[5px] min-w-[100px] cursor-pointer",
+          onclick: () => dispatch(answerShow(card.id,"Good"))
+        }, "Good"),
+        button({
+          className: "bg-yellow-300 hover:bg-yellow-500 p-2 rounded text-[20px] border-[5px] min-w-[100px] ml-[80px] cursor-pointer",
+          onclick: () => dispatch(answerShow(card.id,"Ok"))
+        }, "Ok"),
+        button({
+          className: "bg-rose-400 hover:bg-rose-700 p-2 rounded text-[20px] border-[5px] min-w-[100px] ml-[80px] cursor-pointer",
+          onclick: () => dispatch(answerShow(card.id,"Bad"))
+        }, "Bad"),
+      ]),
+      ]),
+      diva(td, "text-center", [button({
+            className: "hover:bg-gray-200 p-2 rounded text-[50px]",
+            onclick: () => dispatch(deleteCardMsg(card.id)),
+          },
+          "🗑"
+        ),
+      ]),
+    ]);
+  } 
   return tr({ className }, [
     div({className: "bg-amber-200"}, [
-    diva(div, "min-w-[100px] min-h-[20px]  text-[20px] ml-[50px] underline", "Question"),
-    diva(div, "min-w-[100px] min-h-[50px]  text-[20px] ml-[50px]", card.description),
-    div({className:"min-w-[100px] min-h-[50px]  text-[20px] ml-[50px] underline", onclick: () => dispatch(answerShow(card.id))}, "Answer"),
-    diva(div, "min-w-[100px] min-h-[50px]  text-[20px] ml-[50px]", card.answers),
+    diva(div, "min-w-[100px] min-h-[20px]  text-[20px] ml-[50px] underline", "Question"),//(e) => dispatch(questionInputMsg(e.target.value))
+    textarea({className:"min-w-[300px] min-h-[50px]  text-[20px] ml-[50px] resize-none", onchange: (e) => dispatch(answerShow(card.id, card.statusAnswer, 1, e.target.value))}, card.question),
+    div({className:"min-w-[100px] min-h-[50px]  text-[20px] ml-[50px] underline"}, "Answer"),
+    textarea({className:"min-w-[300px] min-h-[50px]  text-[20px] ml-[50px] resize-none", onchange: (e) => dispatch(answerShow(card.id, card.statusAnswer, 1, "", e.target.value))}, card.answers),
     diva(div, "min-w-[100px] min-h-[50px]  text-[30px] ml-[50px]", "Answer status: " + card.statusAnswer),
-    div({className:"min-w-[100px] min-h-[50px]  text-[20px] ml-[50px]"},[
+    div({className:"min-w-[100px] min-h-[50px]  text-[20px] ml-[50px]"},[ 
       button({
         className: "bg-lime-400 hover:bg-lime-700 p-2 rounded text-[20px] border-[5px] min-w-[100px] cursor-pointer",
         onclick: () => dispatch(answerShow(card.id,"Good"))
@@ -59,7 +90,6 @@ function cardRow(dispatch, className, card) {
       ),
     ]),
   ]);
- 
 }
 
 function cardsBody(dispatch, className, cards) {
@@ -108,7 +138,7 @@ function buttonSet(dispatch) {
 }
 
 function formView(dispatch, model) {
-  const { description, answers, showForm } = model;
+  const { question, answers, showForm } = model;
   if (showForm) {
     return form(
       {
@@ -120,7 +150,7 @@ function formView(dispatch, model) {
       },
       [
         div({ className: "flex gap-4" }, [
-          fieldSet("Question", description, "Enter question", (e) => dispatch(questionInputMsg(e.target.value))),
+          fieldSet("Question", question, "Enter question", (e) => dispatch(questionInputMsg(e.target.value))),
           fieldSet("Answer", answers || "", "Enter answer", (e) => dispatch(answerInputMsg(e.target.value))),
         ]),
         buttonSet(dispatch),

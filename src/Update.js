@@ -16,10 +16,10 @@ export function showFormMsg(showForm) {
   };
 }
 
-export function questionInputMsg(description) {
+export function questionInputMsg(question) {
   return {
     type: MSGS.QUESTION_INPUT,
-    description,
+    question,
   };
 }
 
@@ -39,11 +39,24 @@ export function deleteCardMsg(id) {
   };
 }
 
-export function answerShow(id, answerShow = "") {
+export function answerShow(id, answerShow = "", changeTextStatus = 1, changedQuestion = "", changedAnswer = "") {
+  if (changedAnswer=== "") {
+    return {
+      type: MSGS.ANSWER_SHOW,
+      id,
+      answerShow,
+      changeTextStatus,
+      changedValue: changedQuestion,
+      changeType: 1
+    };
+  } 
   return {
     type: MSGS.ANSWER_SHOW,
     id,
-    answerShow
+    answerShow,
+    changeTextStatus,
+    changedValue: changedAnswer,
+    changeType: 2
   };
 }
 
@@ -52,26 +65,49 @@ function update(msg, model) {
     case MSGS.ANSWER_SHOW: {
       const id = msg.id ;
       const statusAnswer = msg.answerShow;
+      const toogle = msg.changeTextStatus;
+      const neuValue = msg.changedValue;
       const oneCard = R.filter(
         card => card.id == id
       , model.cards);
-      const card = {id:oneCard[oneCard.length - 1].id + 1, description:oneCard[0].description, answers:oneCard[0].answers, toogle:1, statusAnswer: statusAnswer};
+      if (neuValue === "") {
+        const card = {id:oneCard[oneCard.length - 1].id + 1, question:oneCard[0].question, answers:oneCard[0].answers, toogle: toogle, statusAnswer: statusAnswer};
+        const cards = [...model.cards, card]
+        console.log(cards);
+        return {...model, cards, nextId: card.id, question: '',
+        answers: 0,
+        showForm: false,
+        toogle: toogle,
+        statusAnswer: ""
+        };
+      } else if (msg.changeType == 1) {
+        const card = {id:oneCard[oneCard.length - 1].id + 1, question:neuValue, answers:oneCard[0].answers, toogle: toogle, statusAnswer: statusAnswer};
+        const cards = [...model.cards, card]
+        console.log(cards);
+        return {...model, cards, nextId: card.id, question: '',
+        answers: 0,
+        showForm: false,
+        toogle: toogle,
+        statusAnswer: ""
+        };
+      }
+      const card = {id:oneCard[oneCard.length - 1].id + 1, question:oneCard[0].question, answers:neuValue, toogle: toogle, statusAnswer: statusAnswer};
       const cards = [...model.cards, card]
       console.log(cards);
-      return {...model, cards, nextId: card.id, description: '',
+      return {...model, cards, nextId: card.id, question: '',
       answers: 0,
       showForm: false,
-      toogle: 1,
+      toogle: toogle,
       statusAnswer: ""
       };
     }
     case MSGS.SHOW_FORM: {
       const { showForm } = msg;
-      return { ...model, showForm, description: '', answers: 0 };
+      return { ...model, showForm, question: '', answers: 0 };
     }
     case MSGS.QUESTION_INPUT: {
-      const { description } = msg;
-      return { ...model, description };
+      const { question } = msg;
+      return { ...model, question };
     }
     case MSGS.ANSWER_INPUT: {
       const answers = R.pipe( 
@@ -95,14 +131,14 @@ function update(msg, model) {
 }
 
 function add(msg, model) {
-  const { nextId, description, answers, toogle } = model;
-  const card = { id: nextId + 1, description, answers, toogle:0};
+  const { nextId, question, answers, toogle } = model;
+  const card = { id: nextId + 1, question, answers, toogle:0};
   const cards = [...model.cards, card]
   return {
     ...model,
     cards,
     nextId: nextId + 1,
-    description: '',
+    question: '',
     answers: 0,
     showForm: false,
     toogle: 0

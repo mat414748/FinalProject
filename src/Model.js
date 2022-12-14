@@ -1,5 +1,5 @@
 const initModel = {
-  description: '',
+  question: '',
   answers: 0,
   showForm: false,
   nextId: 1,
