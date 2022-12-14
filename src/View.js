@@ -39,15 +39,15 @@ function cardRow(dispatch, className, card) {
       div({className:"min-w-[100px] min-h-[50px]  text-[20px] ml-[50px]"},[ 
         button({
           className: "bg-lime-400 hover:bg-lime-700 p-2 rounded text-[20px] border-[5px] min-w-[100px] cursor-pointer",
-          onclick: () => dispatch(answerShow(card.id,"Good"))
+          onclick: () => dispatch(answerShow(card.id,"Good 2"))
         }, "Good"),
         button({
           className: "bg-yellow-300 hover:bg-yellow-500 p-2 rounded text-[20px] border-[5px] min-w-[100px] ml-[80px] cursor-pointer",
-          onclick: () => dispatch(answerShow(card.id,"Ok"))
+          onclick: () => dispatch(answerShow(card.id,"Ok 1"))
         }, "Ok"),
         button({
           className: "bg-rose-400 hover:bg-rose-700 p-2 rounded text-[20px] border-[5px] min-w-[100px] ml-[80px] cursor-pointer",
-          onclick: () => dispatch(answerShow(card.id,"Bad"))
+          onclick: () => dispatch(answerShow(card.id,"Bad 0"))
         }, "Bad"),
       ]),
       ]),
@@ -70,15 +70,15 @@ function cardRow(dispatch, className, card) {
     div({className:"min-w-[100px] min-h-[50px]  text-[20px] ml-[50px]"},[ 
       button({
         className: "bg-lime-400 hover:bg-lime-700 p-2 rounded text-[20px] border-[5px] min-w-[100px] cursor-pointer",
-        onclick: () => dispatch(answerShow(card.id,"Good"))
+        onclick: () => dispatch(answerShow(card.id,"Good 2"))
       }, "Good"),
       button({
         className: "bg-yellow-300 hover:bg-yellow-500 p-2 rounded text-[20px] border-[5px] min-w-[100px] ml-[80px] cursor-pointer",
-        onclick: () => dispatch(answerShow(card.id,"Ok"))
+        onclick: () => dispatch(answerShow(card.id,"Ok 1"))
       }, "Ok"),
       button({
         className: "bg-rose-400 hover:bg-rose-700 p-2 rounded text-[20px] border-[5px] min-w-[100px] ml-[80px] cursor-pointer",
-        onclick: () => dispatch(answerShow(card.id,"Bad"))
+        onclick: () => dispatch(answerShow(card.id,"Bad 0"))
       }, "Bad"),
     ]),
     ]),

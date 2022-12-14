@@ -6,7 +6,8 @@ const initModel = {
   editId: null,
   cards: [],
   toogle: 0,
-  statusAnswer: ""
+  statusAnswer: "",
+  rank: 0
 };
 
 export default initModel;

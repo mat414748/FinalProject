@@ -64,16 +64,20 @@ function update(msg, model) {
   switch (msg.type) {
     case MSGS.ANSWER_SHOW: {
       const id = msg.id ;
-      const statusAnswer = msg.answerShow;
+
+      const estimateData = msg.answerShow;
+      const estimate = estimateData.split(' ');
+      const estimateText = estimate[0];
+      const estimateRank = estimate[1];
+
       const toogle = msg.changeTextStatus;
       const neuValue = msg.changedValue;
       const oneCard = R.filter(
         card => card.id == id
       , model.cards);
       if (neuValue === "") {
-        const card = {id:oneCard[oneCard.length - 1].id + 1, question:oneCard[0].question, answers:oneCard[0].answers, toogle: toogle, statusAnswer: statusAnswer};
+        const card = {id:oneCard[oneCard.length - 1].id + 1, question:oneCard[0].question, answers:oneCard[0].answers, toogle: toogle, statusAnswer: estimateText, rank: estimateRank};
         const cards = [...model.cards, card]
-        console.log(cards);
         return {...model, cards, nextId: card.id, question: '',
         answers: 0,
         showForm: false,
@@ -81,7 +85,7 @@ function update(msg, model) {
         statusAnswer: ""
         };
       } else if (msg.changeType == 1) {
-        const card = {id:oneCard[oneCard.length - 1].id + 1, question:neuValue, answers:oneCard[0].answers, toogle: toogle, statusAnswer: statusAnswer};
+        const card = {id:oneCard[oneCard.length - 1].id + 1, question:neuValue, answers:oneCard[0].answers, toogle: toogle, statusAnswer: estimateText, rank: estimateRank};
         const cards = [...model.cards, card]
         console.log(cards);
         return {...model, cards, nextId: card.id, question: '',
@@ -91,7 +95,7 @@ function update(msg, model) {
         statusAnswer: ""
         };
       }
-      const card = {id:oneCard[oneCard.length - 1].id + 1, question:oneCard[0].question, answers:neuValue, toogle: toogle, statusAnswer: statusAnswer};
+      const card = {id:oneCard[oneCard.length - 1].id + 1, question:oneCard[0].question, answers:neuValue, toogle: toogle, statusAnswer: estimateText, rank: estimateRank};
       const cards = [...model.cards, card]
       console.log(cards);
       return {...model, cards, nextId: card.id, question: '',
@@ -141,7 +145,8 @@ function add(msg, model) {
     question: '',
     answers: 0,
     showForm: false,
-    toogle: 0
+    toogle: 0,
+    rank: 0
   };
 }
 

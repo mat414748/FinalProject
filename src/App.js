@@ -2,6 +2,8 @@ import { h, diff, patch } from 'virtual-dom';
 import createElement from 'virtual-dom/create-element';
 import {  deleteCardMsg } from "./Update";
 
+import * as R from 'ramda';
+
 function app(initModel, update, view, node) {
   let model = initModel;
   let currentView = view(dispatch, model);
@@ -15,14 +17,12 @@ function app(initModel, update, view, node) {
       const patches = diff(currentView, updatedView);
       rootNode = patch(rootNode, patches);
       currentView = updatedView;
-      if (updatedModel.nextId > 2) {
-        dispatch(deleteCardMsg(updatedModel.nextId-1));
-      } else {
-        dispatch(deleteCardMsg(updatedModel.nextId-1));
-      } 
-      console.log(updatedModel);
+      dispatch(deleteCardMsg(updatedModel.nextId-1));
     } else {
       model = update(msg, model);
+      const newModel = model.cards;
+      const trueCardsSequence = R.sortBy(R.prop('rank'), newModel);
+      model.cards = trueCardsSequence.reverse();
       const updatedView = view(dispatch, model);
       const patches = diff(currentView, updatedView);
       rootNode = patch(rootNode, patches);
